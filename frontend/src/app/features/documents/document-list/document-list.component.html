@@ -1,0 +1,96 @@
+<div class="document-list-container">
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <h1>📄 GED - Documentos</h1>
+        <div class="user-info">
+          <span>{{ currentUser?.username }} ({{ currentUser?.role }})</span>
+          <button class="btn btn-secondary" (click)="logout()">Sair</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="filters card">
+      <div class="filter-row">
+        <div class="form-group">
+          <label for="search">Buscar por título</label>
+          <input 
+            type="text" 
+            id="search" 
+            [(ngModel)]="searchTitle"
+            (keyup.enter)="onSearch()"
+            placeholder="Digite o título do documento">
+        </div>
+
+        <div class="form-group">
+          <label for="status">Filtrar por status</label>
+          <select id="status" [(ngModel)]="filterStatus" (change)="onFilterChange()">
+            <option value="">Todos</option>
+            <option [value]="DocumentStatus.DRAFT">Rascunho</option>
+            <option [value]="DocumentStatus.PUBLISHED">Publicado</option>
+            <option [value]="DocumentStatus.ARCHIVED">Arquivado</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary" (click)="onSearch()">Buscar</button>
+      </div>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+    </div>
+
+    <div *ngIf="!loading && documents.length === 0" class="alert alert-info">
+      Nenhum documento encontrado.
+    </div>
+
+    <div class="documents-grid" *ngIf="!loading && documents.length > 0">
+      <div class="document-card card" *ngFor="let doc of documents" (click)="viewDocument(doc.id)">
+        <div class="document-header">
+          <h3>{{ doc.title }}</h3>
+          <span class="badge" [ngClass]="getStatusClass(doc.status)">
+            {{ doc.status }}
+          </span>
+        </div>
+        
+        <p class="document-description">{{ doc.description || 'Sem descrição' }}</p>
+        
+        <div class="document-tags" *ngIf="doc.tags && doc.tags.length > 0">
+          <span class="tag" *ngFor="let tag of doc.tags">{{ tag }}</span>
+        </div>
+        
+        <div class="document-footer">
+          <span class="owner">👤 {{ doc.ownerUsername }}</span>
+          <span class="version" *ngIf="doc.currentVersion">v{{ doc.currentVersion }}</span>
+          <span class="date">{{ doc.createdAt | date:'dd/MM/yyyy' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button 
+        class="btn btn-secondary" 
+        [disabled]="currentPage === 0"
+        (click)="goToPage(currentPage - 1)">
+        Anterior
+      </button>
+      
+      <span class="page-info">
+        Página {{ currentPage + 1 }} de {{ totalPages }} ({{ totalElements }} documentos)
+      </span>
+      
+      <button 
+        class="btn btn-secondary" 
+        [disabled]="currentPage === totalPages - 1"
+        (click)="goToPage(currentPage + 1)">
+        Próxima
+      </button>
+    </div>
+  </div>
+</div>

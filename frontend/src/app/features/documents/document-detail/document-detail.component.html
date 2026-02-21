@@ -1,0 +1,94 @@
+<div class="document-detail-container">
+  <div class="container">
+    <button class="btn btn-secondary back-btn" (click)="goBack()">
+      ← Voltar para Documentos
+    </button>
+
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!loading && document" class="document-content">
+      <div class="document-header card">
+        <div class="header-top">
+          <h1>{{ document.title }}</h1>
+          <span class="badge" [ngClass]="'badge-' + document.status.toLowerCase()">
+            {{ document.status }}
+          </span>
+        </div>
+
+        <p class="description">{{ document.description || 'Sem descrição' }}</p>
+
+        <div class="document-tags" *ngIf="document.tags && document.tags.length > 0">
+          <span class="tag" *ngFor="let tag of document.tags">{{ tag }}</span>
+        </div>
+
+        <div class="document-meta">
+          <div class="meta-item">
+            <strong>Proprietário:</strong> {{ document.ownerUsername }}
+          </div>
+          <div class="meta-item" *ngIf="document.tenantId">
+            <strong>Tenant:</strong> {{ document.tenantId }}
+          </div>
+          <div class="meta-item">
+            <strong>Criado em:</strong> {{ document.createdAt | date:'dd/MM/yyyy HH:mm' }}
+          </div>
+          <div class="meta-item">
+            <strong>Atualizado em:</strong> {{ document.updatedAt | date:'dd/MM/yyyy HH:mm' }}
+          </div>
+        </div>
+      </div>
+
+      <div class="versions-section card">
+        <div class="section-header">
+          <h2>📎 Versões do Documento</h2>
+          <div class="upload-section">
+            <input 
+              type="file" 
+              #fileInput 
+              (change)="onFileSelected($event)"
+              accept=".pdf,.png,.jpg,.jpeg"
+              style="display: none">
+            <button 
+              class="btn btn-primary" 
+              (click)="fileInput.click()"
+              [disabled]="uploadingFile">
+              <span *ngIf="!uploadingFile">+ Upload Nova Versão</span>
+              <span *ngIf="uploadingFile">Enviando...</span>
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="versions.length === 0" class="alert alert-info">
+          Nenhuma versão disponível. Faça o upload do primeiro arquivo.
+        </div>
+
+        <div class="versions-list" *ngIf="versions.length > 0">
+          <div class="version-item" *ngFor="let version of versions">
+            <div class="version-info">
+              <div class="version-number">v{{ version.versionNumber }}</div>
+              <div class="version-details">
+                <div class="file-name">{{ version.fileName }}</div>
+                <div class="file-meta">
+                  {{ formatFileSize(version.fileSize) }} • 
+                  {{ version.mimeType }} • 
+                  Enviado por {{ version.uploadedBy }} em 
+                  {{ version.uploadedAt | date:'dd/MM/yyyy HH:mm' }}
+                </div>
+              </div>
+            </div>
+            <button 
+              class="btn btn-secondary" 
+              (click)="downloadFile(version.id, version.fileName)">
+              ⬇ Download
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
