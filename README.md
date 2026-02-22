@@ -109,7 +109,7 @@ frontend/
 - Node.js 18+
 - PostgreSQL 15+
 
-## 🔧 Instalação e Execução
+## Instalação e Execução
 
 ### Opção 1: Docker Compose (Recomendado)
 
@@ -119,20 +119,38 @@ git clone <repository-url>
 cd MVP_UDS
 ```
 
-2. **Configure as variáveis de ambiente (opcional)**
-```bash
-cp .env.example .env
-# Edite .env se necessário
-```
-
-3. **Inicie os containers**
+2. **Inicie o backend e banco de dados**
 ```bash
 docker-compose up -d
 ```
 
+Isso irá:
+- ✅ Criar e iniciar o PostgreSQL
+- ✅ Executar as migrations do Flyway (criação de tabelas)
+- ✅ **Criar automaticamente os usuários padrão com senhas criptografadas**
+- ✅ Iniciar o backend na porta 8080
+
+3. **Inicie o frontend**
+```bash
+cd frontend
+npm install
+npm start
+```
+
 4. **Acesse a aplicação**
+- Frontend: http://localhost:4200
 - Backend API: http://localhost:8080
-- Frontend: Você precisará servir o frontend separadamente (veja abaixo)
+
+### 🔐 Credenciais Padrão
+
+Os usuários são criados **automaticamente** na primeira inicialização:
+
+| Usuário | Senha | Role |
+|---------|-------|------|
+| `admin` | `password123` | ADMIN |
+| `user` | `password123` | USER |
+
+> ⚠️ **Importante**: As senhas são criptografadas automaticamente usando BCrypt. Não é necessário nenhuma configuração manual!
 
 ### Opção 2: Execução Local
 
