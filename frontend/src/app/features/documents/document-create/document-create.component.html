@@ -1,0 +1,87 @@
+<div class="container mx-auto px-4 py-8 max-w-2xl">
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-2xl font-bold mb-6">Novo Documento</h1>
+
+    <form [formGroup]="documentForm" (ngSubmit)="onSubmit()">
+      <div class="mb-4">
+        <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+          Título <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="title"
+          formControlName="title"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Digite o título do documento"
+        />
+        <div *ngIf="documentForm.get('title')?.invalid && documentForm.get('title')?.touched" class="text-red-500 text-sm mt-1">
+          <span *ngIf="documentForm.get('title')?.errors?.['required']">Título é obrigatório</span>
+          <span *ngIf="documentForm.get('title')?.errors?.['maxlength']">Título deve ter no máximo 255 caracteres</span>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+          Descrição
+        </label>
+        <textarea
+          id="description"
+          formControlName="description"
+          rows="4"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Digite a descrição do documento"
+        ></textarea>
+      </div>
+
+      <div class="mb-4">
+        <label for="tags" class="block text-sm font-medium text-gray-700 mb-2">
+          Tags
+        </label>
+        <input
+          type="text"
+          id="tags"
+          formControlName="tags"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Digite as tags separadas por vírgula (ex: contrato, importante)"
+        />
+        <p class="text-sm text-gray-500 mt-1">Separe as tags por vírgula</p>
+      </div>
+
+      <div class="mb-6">
+        <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
+          Status <span class="text-red-500">*</span>
+        </label>
+        <select
+          id="status"
+          formControlName="status"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+
+      <div *ngIf="error" class="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+        {{ error }}
+      </div>
+
+      <div class="flex gap-3">
+        <button
+          type="submit"
+          [disabled]="documentForm.invalid || loading"
+          class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+        >
+          <span *ngIf="!loading">Criar Documento</span>
+          <span *ngIf="loading">Criando...</span>
+        </button>
+        <button
+          type="button"
+          (click)="onCancel()"
+          [disabled]="loading"
+          class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 disabled:cursor-not-allowed"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

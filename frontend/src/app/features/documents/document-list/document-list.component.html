@@ -4,6 +4,7 @@
       <div class="header-content">
         <h1>📄 GED - Documentos</h1>
         <div class="user-info">
+          <button class="btn btn-primary" routerLink="/documents/new">➕ Novo Documento</button>
           <span>{{ currentUser?.username }} ({{ currentUser?.role }})</span>
           <button class="btn btn-secondary" (click)="logout()">Sair</button>
         </div>

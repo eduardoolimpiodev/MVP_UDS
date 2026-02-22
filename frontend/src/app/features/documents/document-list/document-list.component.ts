@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { DocumentService } from '../../../core/services/document.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Document, DocumentStatus } from '../../../core/models/document.model';
@@ -9,7 +9,7 @@ import { Document, DocumentStatus } from '../../../core/models/document.model';
 @Component({
   selector: 'app-document-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './document-list.component.html',
   styleUrls: ['./document-list.component.scss']
 })
