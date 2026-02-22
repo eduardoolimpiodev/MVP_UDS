@@ -111,4 +111,4 @@ jobs:
       run: docker build -t ged-backend:latest .
     
     - name: Test Docker Compose
-      run: docker-compose config
+      run: docker compose config
