@@ -2,13 +2,14 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DocumentService } from '../../../core/services/document.service';
 import { DocumentStatus } from '../../../core/models/document.model';
 
 @Component({
   selector: 'app-document-create',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './document-create.component.html',
   styleUrl: './document-create.component.scss'
 })
@@ -22,6 +23,7 @@ export class DocumentCreateComponent {
   error: string | null = null;
 
   statuses = Object.values(DocumentStatus);
+  DocumentStatus = DocumentStatus;
 
   constructor() {
     this.documentForm = this.fb.group({

@@ -1,0 +1,66 @@
+{
+  "DOCUMENT_STATUS": {
+    "DRAFT": "Draft",
+    "PUBLISHED": "Published",
+    "ARCHIVED": "Archived"
+  },
+  "DOCUMENT_LIST": {
+    "TITLE": "DMS",
+    "SUBTITLE": "Document Management",
+    "NEW_DOCUMENT": "New Document",
+    "SEARCH_PLACEHOLDER": "Type the document title...",
+    "STATUS_FILTER": "Status",
+    "ALL_STATUS": "All statuses",
+    "SEARCH_BUTTON": "Search",
+    "SHOWING": "Showing",
+    "OF": "of",
+    "DOCUMENTS": "documents",
+    "NO_DOCUMENTS": "No documents found",
+    "NO_DOCUMENTS_DESC": "Start by creating a new document or adjust the search filters.",
+    "CREATE_FIRST": "Create First Document",
+    "NO_DESCRIPTION": "No description available",
+    "PREVIOUS": "Previous",
+    "NEXT": "Next",
+    "PAGE": "Page"
+  },
+  "DOCUMENT_CREATE": {
+    "TITLE": "New Document",
+    "SUBTITLE": "Fill in the information below to create a new document",
+    "FIELD_TITLE": "Title",
+    "FIELD_DESCRIPTION": "Description",
+    "FIELD_TAGS": "Tags",
+    "FIELD_STATUS": "Status",
+    "REQUIRED": "*",
+    "TITLE_PLACEHOLDER": "Enter the document title",
+    "DESCRIPTION_PLACEHOLDER": "Enter the document description",
+    "TAGS_PLACEHOLDER": "Enter tags separated by comma (e.g., contract, important)",
+    "TAGS_HELP": "Separate tags with commas",
+    "TITLE_REQUIRED": "Title is required",
+    "TITLE_MAX_LENGTH": "Title must be at most 255 characters",
+    "CREATE_BUTTON": "Create Document",
+    "CREATING": "Creating...",
+    "CANCEL": "Cancel"
+  },
+  "LOGIN": {
+    "TITLE": "DMS",
+    "SUBTITLE": "Document Management System",
+    "LOGIN": "Login",
+    "USERNAME": "Username",
+    "PASSWORD": "Password",
+    "USERNAME_PLACEHOLDER": "Enter your username",
+    "PASSWORD_PLACEHOLDER": "Enter your password",
+    "USERNAME_REQUIRED": "Username is required",
+    "PASSWORD_REQUIRED": "Password is required",
+    "LOGIN_BUTTON": "Sign In",
+    "LOADING": "Loading...",
+    "TEST_USERS": "Test users:",
+    "ADMIN": "Admin:",
+    "USER": "User:",
+    "COPYRIGHT": "© 2026 DMS - All rights reserved"
+  },
+  "COMMON": {
+    "LOGOUT": "Logout",
+    "ERROR": "Error",
+    "SUCCESS": "Success"
+  }
+}

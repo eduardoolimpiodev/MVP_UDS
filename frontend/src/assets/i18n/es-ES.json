@@ -1,0 +1,66 @@
+{
+  "DOCUMENT_STATUS": {
+    "DRAFT": "Borrador",
+    "PUBLISHED": "Publicado",
+    "ARCHIVED": "Archivado"
+  },
+  "DOCUMENT_LIST": {
+    "TITLE": "SGD",
+    "SUBTITLE": "Gestión de Documentos",
+    "NEW_DOCUMENT": "Nuevo Documento",
+    "SEARCH_PLACEHOLDER": "Escriba el título del documento...",
+    "STATUS_FILTER": "Estado",
+    "ALL_STATUS": "Todos los estados",
+    "SEARCH_BUTTON": "Buscar",
+    "SHOWING": "Mostrando",
+    "OF": "de",
+    "DOCUMENTS": "documentos",
+    "NO_DOCUMENTS": "No se encontraron documentos",
+    "NO_DOCUMENTS_DESC": "Comience creando un nuevo documento o ajuste los filtros de búsqueda.",
+    "CREATE_FIRST": "Crear Primer Documento",
+    "NO_DESCRIPTION": "Sin descripción disponible",
+    "PREVIOUS": "Anterior",
+    "NEXT": "Siguiente",
+    "PAGE": "Página"
+  },
+  "DOCUMENT_CREATE": {
+    "TITLE": "Nuevo Documento",
+    "SUBTITLE": "Complete la información a continuación para crear un nuevo documento",
+    "FIELD_TITLE": "Título",
+    "FIELD_DESCRIPTION": "Descripción",
+    "FIELD_TAGS": "Etiquetas",
+    "FIELD_STATUS": "Estado",
+    "REQUIRED": "*",
+    "TITLE_PLACEHOLDER": "Ingrese el título del documento",
+    "DESCRIPTION_PLACEHOLDER": "Ingrese la descripción del documento",
+    "TAGS_PLACEHOLDER": "Ingrese etiquetas separadas por coma (ej: contrato, importante)",
+    "TAGS_HELP": "Separe las etiquetas con comas",
+    "TITLE_REQUIRED": "El título es obligatorio",
+    "TITLE_MAX_LENGTH": "El título debe tener como máximo 255 caracteres",
+    "CREATE_BUTTON": "Crear Documento",
+    "CREATING": "Creando...",
+    "CANCEL": "Cancelar"
+  },
+  "LOGIN": {
+    "TITLE": "SGD",
+    "SUBTITLE": "Sistema de Gestión de Documentos",
+    "LOGIN": "Iniciar Sesión",
+    "USERNAME": "Usuario",
+    "PASSWORD": "Contraseña",
+    "USERNAME_PLACEHOLDER": "Ingrese su usuario",
+    "PASSWORD_PLACEHOLDER": "Ingrese su contraseña",
+    "USERNAME_REQUIRED": "El usuario es obligatorio",
+    "PASSWORD_REQUIRED": "La contraseña es obligatoria",
+    "LOGIN_BUTTON": "Entrar",
+    "LOADING": "Cargando...",
+    "TEST_USERS": "Usuarios de prueba:",
+    "ADMIN": "Admin:",
+    "USER": "Usuario:",
+    "COPYRIGHT": "© 2026 SGD - Todos los derechos reservados"
+  },
+  "COMMON": {
+    "LOGOUT": "Salir",
+    "ERROR": "Error",
+    "SUCCESS": "Éxito"
+  }
+}

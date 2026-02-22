@@ -1,97 +1,232 @@
-<div class="document-list-container">
-  <header class="header">
-    <div class="container">
-      <div class="header-content">
-        <h1>📄 GED - Documentos</h1>
-        <div class="user-info">
-          <button class="btn btn-primary" routerLink="/documents/new">➕ Novo Documento</button>
-          <span>{{ currentUser?.username }} ({{ currentUser?.role }})</span>
-          <button class="btn btn-secondary" (click)="logout()">Sair</button>
+<header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-md">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold text-gray-900">GED</h1>
+          <p class="text-xs text-gray-500">Gestão de Documentos</p>
         </div>
       </div>
-    </div>
-  </header>
 
-  <div class="container">
-    <div class="filters card">
-      <div class="filter-row">
-        <div class="form-group">
-          <label for="search">Buscar por título</label>
-          <input 
-            type="text" 
-            id="search" 
-            [(ngModel)]="searchTitle"
-            (keyup.enter)="onSearch()"
-            placeholder="Digite o título do documento">
-        </div>
-
-        <div class="form-group">
-          <label for="status">Filtrar por status</label>
-          <select id="status" [(ngModel)]="filterStatus" (change)="onFilterChange()">
-            <option value="">Todos</option>
-            <option [value]="DocumentStatus.DRAFT">Rascunho</option>
-            <option [value]="DocumentStatus.PUBLISHED">Publicado</option>
-            <option [value]="DocumentStatus.ARCHIVED">Arquivado</option>
-          </select>
-        </div>
-
-        <button class="btn btn-primary" (click)="onSearch()">Buscar</button>
-      </div>
-    </div>
-
-    <div *ngIf="errorMessage" class="alert alert-error">
-      {{ errorMessage }}
-    </div>
-
-    <div *ngIf="loading" class="loading">
-      <div class="spinner"></div>
-    </div>
-
-    <div *ngIf="!loading && documents.length === 0" class="alert alert-info">
-      Nenhum documento encontrado.
-    </div>
-
-    <div class="documents-grid" *ngIf="!loading && documents.length > 0">
-      <div class="document-card card" *ngFor="let doc of documents" (click)="viewDocument(doc.id)">
-        <div class="document-header">
-          <h3>{{ doc.title }}</h3>
-          <span class="badge" [ngClass]="getStatusClass(doc.status)">
-            {{ doc.status }}
-          </span>
-        </div>
+      <div class="flex items-center space-x-4">
+        <app-language-selector></app-language-selector>
         
-        <p class="document-description">{{ doc.description || 'Sem descrição' }}</p>
+        <button 
+          routerLink="/documents/new"
+          class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-sm font-medium rounded-lg shadow-sm transition-all duration-200 hover:shadow-md">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          {{ 'DOCUMENT_LIST.NEW_DOCUMENT' | translate }}
+        </button>
         
-        <div class="document-tags" *ngIf="doc.tags && doc.tags.length > 0">
-          <span class="tag" *ngFor="let tag of doc.tags">{{ tag }}</span>
-        </div>
-        
-        <div class="document-footer">
-          <span class="owner">👤 {{ doc.ownerUsername }}</span>
-          <span class="version" *ngIf="doc.currentVersion">v{{ doc.currentVersion }}</span>
-          <span class="date">{{ doc.createdAt | date:'dd/MM/yyyy' }}</span>
+        <div class="flex items-center space-x-3 pl-4 border-l border-gray-200">
+          <div class="text-right">
+            <p class="text-sm font-medium text-gray-900">{{ currentUser?.username }}</p>
+            <p class="text-xs text-gray-500">{{ currentUser?.role }}</p>
+          </div>
+          <button 
+            (click)="logout()"
+            class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+            </svg>
+          </button>
         </div>
       </div>
-    </div>
-
-    <div class="pagination" *ngIf="totalPages > 1">
-      <button 
-        class="btn btn-secondary" 
-        [disabled]="currentPage === 0"
-        (click)="goToPage(currentPage - 1)">
-        Anterior
-      </button>
-      
-      <span class="page-info">
-        Página {{ currentPage + 1 }} de {{ totalPages }} ({{ totalElements }} documentos)
-      </span>
-      
-      <button 
-        class="btn btn-secondary" 
-        [disabled]="currentPage === totalPages - 1"
-        (click)="goToPage(currentPage + 1)">
-        Próxima
-      </button>
     </div>
   </div>
-</div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="md:col-span-2">
+        <label for="search" class="block text-sm font-medium text-gray-700 mb-2">
+          Buscar por título
+        </label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+          </div>
+          <input 
+            type="text" 
+            id="search"
+            [(ngModel)]="searchTitle"
+            (keyup.enter)="onSearch()"
+            placeholder="Digite o título do documento..."
+            class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+        </div>
+      </div>
+
+      <div>
+        <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
+          Status
+        </label>
+        <select 
+          id="status"
+          [(ngModel)]="filterStatus"
+          (change)="onFilterChange()"
+          class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+          <option value="">Todos os status</option>
+          <option [value]="DocumentStatus.DRAFT">Rascunho</option>
+          <option [value]="DocumentStatus.PUBLISHED">Publicado</option>
+          <option [value]="DocumentStatus.ARCHIVED">Arquivado</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mt-4 flex justify-end">
+      <button 
+        (click)="onSearch()"
+        class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-lg transition-all shadow-sm hover:shadow-md">
+        Buscar
+      </button>
+    </div>
+
+    <div class="mt-4 pt-4 border-t border-gray-200" *ngIf="!loading && documents.length > 0">
+      <p class="text-sm text-gray-600">
+        Mostrando <span class="font-semibold">{{ documents.length }}</span> de 
+        <span class="font-semibold">{{ totalElements }}</span> documentos
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+    <div class="flex items-center">
+      <svg class="w-5 h-5 text-red-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"/>
+      </svg>
+      <p class="text-sm text-red-700 font-medium">{{ errorMessage }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let i of [1,2,3,4,5,6]" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 animate-pulse">
+      <div class="h-6 bg-gray-200 rounded w-3/4 mb-4"></div>
+      <div class="h-4 bg-gray-200 rounded w-full mb-2"></div>
+      <div class="h-4 bg-gray-200 rounded w-5/6 mb-4"></div>
+      <div class="flex gap-2 mb-4">
+        <div class="h-6 bg-gray-200 rounded w-16"></div>
+        <div class="h-6 bg-gray-200 rounded w-16"></div>
+      </div>
+      <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && documents.length === 0" class="text-center py-16">
+    <svg class="mx-auto h-24 w-24 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+    </svg>
+    <h3 class="mt-4 text-lg font-medium text-gray-900">Nenhum documento encontrado</h3>
+    <p class="mt-2 text-sm text-gray-500">Comece criando um novo documento ou ajuste os filtros de busca.</p>
+    <button 
+      routerLink="/documents/new"
+      class="mt-6 inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-lg transition-all shadow-sm hover:shadow-md">
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
+      Criar Primeiro Documento
+    </button>
+  </div>
+
+  <div *ngIf="!loading && documents.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div 
+      *ngFor="let doc of documents" 
+      (click)="viewDocument(doc.id)"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:border-blue-300 transition-all duration-200 cursor-pointer group">
+      
+      <div class="flex items-start justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 flex-1">
+          {{ doc.title }}
+        </h3>
+        <span 
+          class="ml-2 px-2.5 py-1 text-xs font-medium rounded-full whitespace-nowrap"
+          [ngClass]="{
+            'bg-yellow-100 text-yellow-800': doc.status === DocumentStatus.DRAFT,
+            'bg-green-100 text-green-800': doc.status === DocumentStatus.PUBLISHED,
+            'bg-gray-100 text-gray-800': doc.status === DocumentStatus.ARCHIVED
+          }">
+          {{ 'DOCUMENT_STATUS.' + doc.status | translate }}
+        </span>
+      </div>
+      
+      <p class="text-sm text-gray-600 mb-4 line-clamp-2 min-h-[2.5rem]">
+        {{ doc.description || 'Sem descrição disponível' }}
+      </p>
+      
+      <div class="flex flex-wrap gap-2 mb-4 min-h-[2rem]" *ngIf="doc.tags && doc.tags.length > 0">
+        <span 
+          *ngFor="let tag of doc.tags.slice(0, 3)" 
+          class="px-2 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded">
+          #{{ tag }}
+        </span>
+        <span 
+          *ngIf="doc.tags.length > 3" 
+          class="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded">
+          +{{ doc.tags.length - 3 }}
+        </span>
+      </div>
+      
+      <div class="flex items-center justify-between pt-4 border-t border-gray-100 text-xs text-gray-500">
+        <div class="flex items-center space-x-3">
+          <span class="flex items-center">
+            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+            </svg>
+            {{ doc.ownerUsername }}
+          </span>
+          <span *ngIf="doc.currentVersion" class="flex items-center">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+            v{{ doc.currentVersion }}
+          </span>
+        </div>
+        <span class="flex items-center">
+          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+          {{ doc.createdAt | date:'dd/MM/yyyy' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && documents.length > 0 && totalPages > 1" class="mt-8 flex items-center justify-between">
+    <button 
+      (click)="goToPage(currentPage - 1)"
+      [disabled]="currentPage === 0"
+      class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      Anterior
+    </button>
+    
+    <div class="flex items-center space-x-2">
+      <span class="text-sm text-gray-700">
+        Página <span class="font-semibold">{{ currentPage + 1 }}</span> de 
+        <span class="font-semibold">{{ totalPages }}</span>
+      </span>
+    </div>
+    
+    <button 
+      (click)="goToPage(currentPage + 1)"
+      [disabled]="currentPage === totalPages - 1"
+      class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+      Próxima
+      <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+      </svg>
+    </button>
+  </div>
+</main>

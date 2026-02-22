@@ -36,6 +36,7 @@ public class Document {
     @ElementCollection
     @CollectionTable(name = "document_tags", joinColumns = @JoinColumn(name = "document_id"))
     @Column(name = "tag")
+    @Builder.Default
     private List<String> tags = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -51,6 +52,7 @@ public class Document {
 
     @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("versionNumber DESC")
+    @Builder.Default
     private List<DocumentVersion> versions = new ArrayList<>();
 
     @CreatedDate

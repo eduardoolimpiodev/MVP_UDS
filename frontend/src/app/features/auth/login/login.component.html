@@ -1,49 +1,116 @@
-<div class="login-container">
-  <div class="login-card card">
-    <h1>GED - Sistema de Gestão de Documentos</h1>
-    <h2>Login</h2>
-
-    <div *ngIf="errorMessage" class="alert alert-error">
-      {{ errorMessage }}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl shadow-lg mb-4">
+        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+      </div>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">GED</h1>
+      <p class="text-gray-600">Sistema de Gestão de Documentos</p>
     </div>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="username">Usuário</label>
-        <input 
-          type="text" 
-          id="username" 
-          formControlName="username"
-          placeholder="Digite seu usuário"
-          [class.error]="username?.invalid && username?.touched">
-        <div class="error" *ngIf="username?.invalid && username?.touched">
-          Usuário é obrigatório
+    <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Login</h2>
+
+      <div *ngIf="errorMessage" class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+        <div class="flex items-center">
+          <svg class="w-5 h-5 text-red-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"/>
+          </svg>
+          <p class="text-sm text-red-700 font-medium">{{ errorMessage }}</p>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="password">Senha</label>
-        <input 
-          type="password" 
-          id="password" 
-          formControlName="password"
-          placeholder="Digite sua senha"
-          [class.error]="password?.invalid && password?.touched">
-        <div class="error" *ngIf="password?.invalid && password?.touched">
-          Senha é obrigatória
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div>
+          <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+            Usuário
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+              </svg>
+            </div>
+            <input 
+              type="text" 
+              id="username" 
+              formControlName="username"
+              placeholder="Digite seu usuário"
+              class="block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              [ngClass]="{
+                'border-gray-300': !username?.invalid || !username?.touched,
+                'border-red-500 bg-red-50': username?.invalid && username?.touched
+              }">
+          </div>
+          <p *ngIf="username?.invalid && username?.touched" class="mt-2 text-sm text-red-600">
+            Usuário é obrigatório
+          </p>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+            Senha
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+            </div>
+            <input 
+              type="password" 
+              id="password" 
+              formControlName="password"
+              placeholder="Digite sua senha"
+              class="block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              [ngClass]="{
+                'border-gray-300': !password?.invalid || !password?.touched,
+                'border-red-500 bg-red-50': password?.invalid && password?.touched
+              }">
+          </div>
+          <p *ngIf="password?.invalid && password?.touched" class="mt-2 text-sm text-red-600">
+            Senha é obrigatória
+          </p>
+        </div>
+
+        <button 
+          type="submit" 
+          [disabled]="loading || loginForm.invalid"
+          class="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
+          <svg *ngIf="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span *ngIf="!loading">Entrar</span>
+          <span *ngIf="loading">Carregando...</span>
+        </button>
+      </form>
+
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <p class="text-sm font-semibold text-gray-700 mb-3">Usuários de teste:</p>
+        <div class="space-y-2">
+          <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <span class="text-sm text-gray-600">Admin:</span>
+            <div class="flex gap-2">
+              <code class="px-2 py-1 bg-white border border-gray-200 rounded text-xs font-mono text-gray-800">admin</code>
+              <code class="px-2 py-1 bg-white border border-gray-200 rounded text-xs font-mono text-gray-800">password123</code>
+            </div>
+          </div>
+          <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <span class="text-sm text-gray-600">User:</span>
+            <div class="flex gap-2">
+              <code class="px-2 py-1 bg-white border border-gray-200 rounded text-xs font-mono text-gray-800">user</code>
+              <code class="px-2 py-1 bg-white border border-gray-200 rounded text-xs font-mono text-gray-800">password123</code>
+            </div>
+          </div>
         </div>
       </div>
-
-      <button type="submit" class="btn btn-primary" [disabled]="loading || loginForm.invalid">
-        <span *ngIf="!loading">Entrar</span>
-        <span *ngIf="loading">Carregando...</span>
-      </button>
-    </form>
-
-    <div class="login-info">
-      <p><strong>Usuários de teste:</strong></p>
-      <p>Admin: <code>admin</code> / <code>password123</code></p>
-      <p>User: <code>user</code> / <code>password123</code></p>
     </div>
+
+    <p class="text-center text-sm text-gray-500 mt-6">
+      © 2026 GED - Todos os direitos reservados
+    </p>
   </div>
 </div>

@@ -1,0 +1,66 @@
+{
+  "DOCUMENT_STATUS": {
+    "DRAFT": "Rascunho",
+    "PUBLISHED": "Publicado",
+    "ARCHIVED": "Arquivado"
+  },
+  "DOCUMENT_LIST": {
+    "TITLE": "GED",
+    "SUBTITLE": "Gestão de Documentos",
+    "NEW_DOCUMENT": "Novo Documento",
+    "SEARCH_PLACEHOLDER": "Digite o título do documento...",
+    "STATUS_FILTER": "Status",
+    "ALL_STATUS": "Todos os status",
+    "SEARCH_BUTTON": "Buscar",
+    "SHOWING": "Mostrando",
+    "OF": "de",
+    "DOCUMENTS": "documentos",
+    "NO_DOCUMENTS": "Nenhum documento encontrado",
+    "NO_DOCUMENTS_DESC": "Comece criando um novo documento ou ajuste os filtros de busca.",
+    "CREATE_FIRST": "Criar Primeiro Documento",
+    "NO_DESCRIPTION": "Sem descrição disponível",
+    "PREVIOUS": "Anterior",
+    "NEXT": "Próxima",
+    "PAGE": "Página"
+  },
+  "DOCUMENT_CREATE": {
+    "TITLE": "Novo Documento",
+    "SUBTITLE": "Preencha as informações abaixo para criar um novo documento",
+    "FIELD_TITLE": "Título",
+    "FIELD_DESCRIPTION": "Descrição",
+    "FIELD_TAGS": "Tags",
+    "FIELD_STATUS": "Status",
+    "REQUIRED": "*",
+    "TITLE_PLACEHOLDER": "Digite o título do documento",
+    "DESCRIPTION_PLACEHOLDER": "Digite a descrição do documento",
+    "TAGS_PLACEHOLDER": "Digite as tags separadas por vírgula (ex: contrato, importante)",
+    "TAGS_HELP": "Separe as tags por vírgula",
+    "TITLE_REQUIRED": "Título é obrigatório",
+    "TITLE_MAX_LENGTH": "Título deve ter no máximo 255 caracteres",
+    "CREATE_BUTTON": "Criar Documento",
+    "CREATING": "Criando...",
+    "CANCEL": "Cancelar"
+  },
+  "LOGIN": {
+    "TITLE": "GED",
+    "SUBTITLE": "Sistema de Gestão de Documentos",
+    "LOGIN": "Login",
+    "USERNAME": "Usuário",
+    "PASSWORD": "Senha",
+    "USERNAME_PLACEHOLDER": "Digite seu usuário",
+    "PASSWORD_PLACEHOLDER": "Digite sua senha",
+    "USERNAME_REQUIRED": "Usuário é obrigatório",
+    "PASSWORD_REQUIRED": "Senha é obrigatória",
+    "LOGIN_BUTTON": "Entrar",
+    "LOADING": "Carregando...",
+    "TEST_USERS": "Usuários de teste:",
+    "ADMIN": "Admin:",
+    "USER": "User:",
+    "COPYRIGHT": "© 2026 GED - Todos os direitos reservados"
+  },
+  "COMMON": {
+    "LOGOUT": "Sair",
+    "ERROR": "Erro",
+    "SUCCESS": "Sucesso"
+  }
+}

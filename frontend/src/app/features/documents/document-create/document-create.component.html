@@ -1,87 +1,106 @@
-<div class="container mx-auto px-4 py-8 max-w-2xl">
-  <div class="bg-white rounded-lg shadow-md p-6">
-    <h1 class="text-2xl font-bold mb-6">Novo Documento</h1>
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-2xl mx-auto">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl shadow-lg mb-4">
+        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+      </div>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ 'DOCUMENT_CREATE.TITLE' | translate }}</h1>
+      <p class="text-gray-600">{{ 'DOCUMENT_CREATE.SUBTITLE' | translate }}</p>
+    </div>
 
-    <form [formGroup]="documentForm" (ngSubmit)="onSubmit()">
-      <div class="mb-4">
-        <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
-          Título <span class="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          id="title"
-          formControlName="title"
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Digite o título do documento"
-        />
-        <div *ngIf="documentForm.get('title')?.invalid && documentForm.get('title')?.touched" class="text-red-500 text-sm mt-1">
-          <span *ngIf="documentForm.get('title')?.errors?.['required']">Título é obrigatório</span>
-          <span *ngIf="documentForm.get('title')?.errors?.['maxlength']">Título deve ter no máximo 255 caracteres</span>
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+      <form [formGroup]="documentForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div>
+          <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+            {{ 'DOCUMENT_CREATE.FIELD_TITLE' | translate }} <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="title"
+            formControlName="title"
+            class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            [placeholder]="'DOCUMENT_CREATE.TITLE_PLACEHOLDER' | translate"
+          />
+          <div *ngIf="documentForm.get('title')?.invalid && documentForm.get('title')?.touched" class="mt-2 text-sm text-red-600">
+            <p *ngIf="documentForm.get('title')?.errors?.['required']">{{ 'DOCUMENT_CREATE.TITLE_REQUIRED' | translate }}</p>
+            <p *ngIf="documentForm.get('title')?.errors?.['maxlength']">{{ 'DOCUMENT_CREATE.TITLE_MAX_LENGTH' | translate }}</p>
+          </div>
         </div>
-      </div>
 
-      <div class="mb-4">
-        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-          Descrição
-        </label>
-        <textarea
-          id="description"
-          formControlName="description"
-          rows="4"
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Digite a descrição do documento"
-        ></textarea>
-      </div>
+        <div>
+          <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+            {{ 'DOCUMENT_CREATE.FIELD_DESCRIPTION' | translate }}
+          </label>
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="4"
+            class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+            [placeholder]="'DOCUMENT_CREATE.DESCRIPTION_PLACEHOLDER' | translate"
+          ></textarea>
+        </div>
 
-      <div class="mb-4">
-        <label for="tags" class="block text-sm font-medium text-gray-700 mb-2">
-          Tags
-        </label>
-        <input
-          type="text"
-          id="tags"
-          formControlName="tags"
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Digite as tags separadas por vírgula (ex: contrato, importante)"
-        />
-        <p class="text-sm text-gray-500 mt-1">Separe as tags por vírgula</p>
-      </div>
+        <div>
+          <label for="tags" class="block text-sm font-medium text-gray-700 mb-2">
+            {{ 'DOCUMENT_CREATE.FIELD_TAGS' | translate }}
+          </label>
+          <input
+            type="text"
+            id="tags"
+            formControlName="tags"
+            class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            [placeholder]="'DOCUMENT_CREATE.TAGS_PLACEHOLDER' | translate"
+          />
+          <p class="mt-2 text-sm text-gray-500">{{ 'DOCUMENT_CREATE.TAGS_HELP' | translate }}</p>
+        </div>
 
-      <div class="mb-6">
-        <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
-          Status <span class="text-red-500">*</span>
-        </label>
-        <select
-          id="status"
-          formControlName="status"
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
-        </select>
-      </div>
+        <div>
+          <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
+            {{ 'DOCUMENT_CREATE.FIELD_STATUS' | translate }} <span class="text-red-500">*</span>
+          </label>
+          <select
+            id="status"
+            formControlName="status"
+            class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+          >
+            <option *ngFor="let status of statuses" [value]="status">{{ 'DOCUMENT_STATUS.' + status | translate }}</option>
+          </select>
+        </div>
 
-      <div *ngIf="error" class="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-        {{ error }}
-      </div>
+        <div *ngIf="error" class="p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+          <div class="flex items-center">
+            <svg class="w-5 h-5 text-red-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"/>
+            </svg>
+            <p class="text-sm text-red-700 font-medium">{{ error }}</p>
+          </div>
+        </div>
 
-      <div class="flex gap-3">
-        <button
-          type="submit"
-          [disabled]="documentForm.invalid || loading"
-          class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-        >
-          <span *ngIf="!loading">Criar Documento</span>
-          <span *ngIf="loading">Criando...</span>
-        </button>
-        <button
-          type="button"
-          (click)="onCancel()"
-          [disabled]="loading"
-          class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 disabled:cursor-not-allowed"
-        >
-          Cancelar
-        </button>
-      </div>
-    </form>
+        <div class="flex gap-4 pt-4">
+          <button
+            type="submit"
+            [disabled]="documentForm.invalid || loading"
+            class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <svg *ngIf="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span *ngIf="!loading">{{ 'DOCUMENT_CREATE.CREATE_BUTTON' | translate }}</span>
+            <span *ngIf="loading">{{ 'DOCUMENT_CREATE.CREATING' | translate }}</span>
+          </button>
+          <button
+            type="button"
+            (click)="onCancel()"
+            [disabled]="loading"
+            class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {{ 'DOCUMENT_CREATE.CANCEL' | translate }}
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
