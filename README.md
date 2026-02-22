@@ -150,8 +150,7 @@ Os usuários são criados **automaticamente** na primeira inicialização:
 | `admin` | `password123` | ADMIN |
 | `user` | `password123` | USER |
 
-> ⚠️ **Importante**: As senhas são criptografadas automaticamente usando BCrypt. Não é necessário nenhuma configuração manual!
-
+> ⚠️ **Importante**: As senhas são criptografadas automaticamente usando BCrypt.
 ### Opção 2: Execução Local
 
 #### Backend
@@ -206,9 +205,11 @@ O sistema vem com dois usuários pré-cadastrados:
 | admin | password123 | ADMIN |
 | user | password123 | USER |
 
-## 🧪 Testes
+## Testes
 
 ### Backend - Testes Unitários
+
+O projeto possui **14 testes unitários** cobrindo os principais serviços:
 
 ```bash
 cd backend
@@ -216,9 +217,29 @@ mvn test
 ```
 
 **Cobertura de Testes:**
-- ✅ AuthService - Autenticação e geração de tokens
-- ✅ DocumentService - CRUD e gerenciamento de documentos
-- ✅ FileStorageService - Upload, download e exclusão de arquivos
+- AuthService (2 testes)
+  - Autenticação bem-sucedida com geração de JWT
+  - Validação de roles (ADMIN/USER)
+  
+- DocumentService (7 testes)
+  - Criação de documento
+  - Busca por ID
+  - Atualização de status
+  - Deleção de documento
+  - Tratamento de erros (documento não encontrado, usuário não encontrado)
+  
+- FileStorageService (5 testes)
+  - Upload de arquivo
+  - Download de arquivo
+  - Deleção de arquivo
+  - Validação de tipos de arquivo
+  - Tratamento de erros
+
+### Executar testes com Docker
+
+```bash
+docker run --rm -v ${PWD}:/app -w /app maven:3.9-eclipse-temurin-17 mvn test
+```
 
 ### Executar testes com relatório de cobertura
 
@@ -227,7 +248,53 @@ mvn test jacoco:report
 # Relatório em: target/site/jacoco/index.html
 ```
 
-## 📡 API Endpoints
+## CI/CD Pipeline
+
+O projeto utiliza **GitHub Actions** para integração e entrega contínuas.
+
+### Pipeline Configurado
+
+O pipeline (`.github/workflows/ci.yml`) executa automaticamente em:
+- Push para branches `main` e `develop`
+- Pull Requests para `main` e `develop`
+
+### Jobs do Pipeline
+
+1. **Backend Build and Test**
+   - Setup JDK 17
+   - Build com Maven
+   - Execução de testes unitários
+   - Geração de relatórios de teste
+   - Utiliza PostgreSQL 15 como serviço
+
+2. **Frontend Build**
+   - Setup Node.js 18
+   - Instalação de dependências
+   - Build do projeto Angular
+   - Upload de artifacts
+
+3. **Docker Build**
+   - Build da imagem Docker do backend
+   - Validação do docker-compose
+
+### Executar Pipeline Localmente
+
+```bash
+# Simular build do backend
+cd backend
+mvn clean install
+mvn test
+
+# Simular build do frontend
+cd frontend
+npm ci
+npm run build
+
+# Validar Docker Compose
+docker-compose config
+```
+
+## API Endpoints
 
 ### Autenticação
 

@@ -63,6 +63,7 @@ class DocumentServiceTest {
                 .owner(testUser)
                 .status(DocumentStatus.DRAFT)
                 .build();
+        testDocument.setVersions(new java.util.ArrayList<>());
 
         createRequest = new DocumentCreateRequest(
                 "Test Document",
@@ -142,5 +143,54 @@ class DocumentServiceTest {
                 .hasMessageContaining("Document not found");
 
         verify(documentRepository, times(1)).findById(999L);
+    }
+
+    @Test
+    @DisplayName("Should get document by id successfully")
+    void shouldGetDocumentByIdSuccessfully() {
+        when(documentRepository.findById(1L)).thenReturn(Optional.of(testDocument));
+        when(documentMapper.toResponse(testDocument)).thenReturn(
+                DocumentResponse.builder()
+                        .id(1L)
+                        .title("Test Document")
+                        .description("Test Description")
+                        .status(DocumentStatus.DRAFT)
+                        .build()
+        );
+
+        DocumentResponse response = documentService.getDocumentById(1L);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getId()).isEqualTo(1L);
+        assertThat(response.getTitle()).isEqualTo("Test Document");
+        assertThat(response.getDescription()).isEqualTo("Test Description");
+
+        verify(documentRepository, times(1)).findById(1L);
+        verify(documentMapper, times(1)).toResponse(testDocument);
+    }
+
+    @Test
+    @DisplayName("Should delete document successfully")
+    void shouldDeleteDocumentSuccessfully() {
+        when(documentRepository.findById(1L)).thenReturn(Optional.of(testDocument));
+        doNothing().when(documentRepository).delete(testDocument);
+
+        documentService.deleteDocument(1L);
+
+        verify(documentRepository, times(1)).findById(1L);
+        verify(documentRepository, times(1)).delete(testDocument);
+    }
+
+    @Test
+    @DisplayName("Should throw exception when deleting non-existent document")
+    void shouldThrowExceptionWhenDeletingNonExistentDocument() {
+        when(documentRepository.findById(999L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> documentService.deleteDocument(999L))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Document not found");
+
+        verify(documentRepository, times(1)).findById(999L);
+        verify(documentRepository, never()).delete(any(Document.class));
     }
 }
