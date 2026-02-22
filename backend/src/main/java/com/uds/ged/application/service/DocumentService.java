@@ -75,7 +75,10 @@ public class DocumentService {
     @Transactional(readOnly = true)
     public PageResponse<DocumentResponse> searchDocuments(String title, DocumentStatus status, Pageable pageable) {
         log.debug("Searching documents with title: {} and status: {}", title, status);
-        Page<Document> documentPage = documentRepository.findByFilters(title, status, pageable);
+        Page<Document> documentPage = documentRepository.findAll(
+            com.uds.ged.domain.specification.DocumentSpecification.withFilters(title, status),
+            pageable
+        );
         return buildPageResponse(documentPage);
     }
 
