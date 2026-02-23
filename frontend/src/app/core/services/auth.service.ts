@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
-import { AuthResponse, LoginRequest } from '../models/user.model';
+import { AuthResponse, LoginRequest, RegisterRequest } from '../models/user.model';
 import { ApiResponse } from '../models/document.model';
 import { environment } from '../../../environments/environment';
 
@@ -28,6 +28,37 @@ export class AuthService {
           }
         })
       );
+  }
+
+  register(data: RegisterRequest): Observable<ApiResponse<AuthResponse>> {
+    return this.http.post<ApiResponse<AuthResponse>>(`${environment.apiUrl}/auth/register`, data)
+      .pipe(
+        tap(response => {
+          if (response.success && response.data) {
+            this.setSession(response.data);
+          }
+        })
+      );
+  }
+
+  /**
+   * Checks if a username is available for registration.
+   * 
+   * @param username the username to check
+   * @returns Observable<boolean> true if available, false if taken
+   */
+  checkUsernameAvailability(username: string): Observable<boolean> {
+    return this.http.get<boolean>(`${environment.apiUrl}/auth/check-username/${username}`);
+  }
+
+  /**
+   * Checks if an email is available for registration.
+   * 
+   * @param email the email to check
+   * @returns Observable<boolean> true if available, false if taken
+   */
+  checkEmailAvailability(email: string): Observable<boolean> {
+    return this.http.get<boolean>(`${environment.apiUrl}/auth/check-email/${email}`);
   }
 
   logout(): void {
