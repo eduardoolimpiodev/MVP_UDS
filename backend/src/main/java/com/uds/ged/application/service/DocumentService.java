@@ -61,14 +61,14 @@ public class DocumentService {
 
     @Transactional(readOnly = true)
     public DocumentResponse getDocumentById(Long id) {
-        Document document = documentRepository.findById(id)
+        Document document = documentRepository.findByIdWithTags(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Document", "id", id));
         return documentMapper.toResponse(document);
     }
 
     @Transactional(readOnly = true)
     public PageResponse<DocumentResponse> getAllDocuments(Pageable pageable) {
-        Page<Document> documentPage = documentRepository.findAll(pageable);
+        Page<Document> documentPage = documentRepository.findAllWithTagsAndOwner(pageable);
         return buildPageResponse(documentPage);
     }
 

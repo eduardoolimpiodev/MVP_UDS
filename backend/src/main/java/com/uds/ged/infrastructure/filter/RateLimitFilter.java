@@ -1,6 +1,7 @@
 package com.uds.ged.infrastructure.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.benmanes.caffeine.cache.Cache;
 import com.uds.ged.application.dto.response.ApiResponse;
 import com.uds.ged.config.RateLimitConfig;
 import io.github.bucket4j.Bucket;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Filter to implement rate limiting on registration endpoint.
@@ -31,7 +31,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class RateLimitFilter extends OncePerRequestFilter {
 
-    private final Map<String, Bucket> bucketCache;
+    private final Cache<String, Bucket> bucketCache;
     private final RateLimitConfig rateLimitConfig;
     private final ObjectMapper objectMapper;
 
@@ -42,10 +42,9 @@ public class RateLimitFilter extends OncePerRequestFilter {
         
         String requestURI = request.getRequestURI();
         
-        // Apply rate limiting only to registration endpoint
         if (requestURI.contains("/api/auth/register") && "POST".equals(request.getMethod())) {
             String clientIp = getClientIP(request);
-            Bucket bucket = bucketCache.computeIfAbsent(clientIp, 
+            Bucket bucket = bucketCache.get(clientIp, 
                     k -> rateLimitConfig.createRegistrationBucket());
             
             if (bucket.tryConsume(1)) {
