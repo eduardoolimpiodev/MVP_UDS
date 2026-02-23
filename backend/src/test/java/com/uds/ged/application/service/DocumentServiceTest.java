@@ -69,7 +69,8 @@ class DocumentServiceTest {
                 "Test Document",
                 "Test Description",
                 Arrays.asList("tag1", "tag2"),
-                "tenant1"
+                "tenant1",
+                DocumentStatus.DRAFT
         );
     }
 
