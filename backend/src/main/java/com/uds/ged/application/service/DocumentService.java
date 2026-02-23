@@ -39,7 +39,7 @@ public class DocumentService {
 
     @Transactional
     public DocumentResponse createDocument(DocumentCreateRequest request, String username) {
-        log.debug("Creating document with title: {}", request.getTitle());
+        log.debug("Creating document with title: {} and status: {}", request.getTitle(), request.getStatus());
 
         User owner = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
@@ -50,11 +50,11 @@ public class DocumentService {
                 .tags(request.getTags())
                 .owner(owner)
                 .tenantId(request.getTenantId())
-                .status(DocumentStatus.DRAFT)
+                .status(request.getStatus())
                 .build();
 
         Document savedDocument = documentRepository.save(document);
-        log.info("Document created with ID: {}", savedDocument.getId());
+        log.info("Document created with ID: {} and status: {}", savedDocument.getId(), savedDocument.getStatus());
 
         return documentMapper.toResponse(savedDocument);
     }

@@ -1,6 +1,8 @@
 package com.uds.ged.application.dto.request;
 
+import com.uds.ged.domain.model.enums.DocumentStatus;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,4 +23,7 @@ public class DocumentCreateRequest {
     private List<String> tags = new ArrayList<>();
 
     private String tenantId;
+
+    @NotNull(message = "Status is required")
+    private DocumentStatus status;
 }
