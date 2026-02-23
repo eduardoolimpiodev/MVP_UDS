@@ -137,19 +137,19 @@ class DocumentServiceTest {
     @Test
     @DisplayName("Should throw exception when document not found")
     void shouldThrowExceptionWhenDocumentNotFound() {
-        when(documentRepository.findById(999L)).thenReturn(Optional.empty());
+        when(documentRepository.findByIdWithTags(999L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> documentService.getDocumentById(999L))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Document not found");
 
-        verify(documentRepository, times(1)).findById(999L);
+        verify(documentRepository, times(1)).findByIdWithTags(999L);
     }
 
     @Test
     @DisplayName("Should get document by id successfully")
     void shouldGetDocumentByIdSuccessfully() {
-        when(documentRepository.findById(1L)).thenReturn(Optional.of(testDocument));
+        when(documentRepository.findByIdWithTags(1L)).thenReturn(Optional.of(testDocument));
         when(documentMapper.toResponse(testDocument)).thenReturn(
                 DocumentResponse.builder()
                         .id(1L)
@@ -166,7 +166,7 @@ class DocumentServiceTest {
         assertThat(response.getTitle()).isEqualTo("Test Document");
         assertThat(response.getDescription()).isEqualTo("Test Description");
 
-        verify(documentRepository, times(1)).findById(1L);
+        verify(documentRepository, times(1)).findByIdWithTags(1L);
         verify(documentMapper, times(1)).toResponse(testDocument);
     }
 
